@@ -9,262 +9,264 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0a0a0f;
-      --surface: #13131a;
-      --surface2: #1c1c27;
-      --border: rgba(255,255,255,0.07);
-      --accent: #7c5cfc;
-      --accent2: #fc5c7d;
-      --accent3: #5cf8d4;
-      --text: #f0f0f8;
-      --muted: #7a7a9a;
-      --gold: #ffc75f;
-      --radius: 16px;
+      --bg:#0a0a0f; --surface:#13131a; --surface2:#1c1c27;
+      --border:rgba(255,255,255,0.07); --accent:#7c5cfc; --accent2:#fc5c7d;
+      --accent3:#5cf8d4; --text:#f0f0f8; --muted:#7a7a9a; --gold:#ffc75f; --radius:16px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.5;}
+    .orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;}
+    .orb1{width:600px;height:600px;background:rgba(124,92,252,0.15);top:-200px;left:-200px;}
+    .orb2{width:500px;height:500px;background:rgba(252,92,125,0.1);bottom:-150px;right:-100px;}
+    .orb3{width:400px;height:400px;background:rgba(92,248,212,0.07);top:50%;left:50%;transform:translate(-50%,-50%);}
+    .app{position:relative;z-index:1;}
+    .screen{display:none;min-height:100vh;}
+    .screen.active{display:flex;flex-direction:column;}
+
+    /* LANDING */
+    #landing{align-items:center;justify-content:center;padding:40px 20px;text-align:center;}
+    .landing-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,92,252,0.15);border:1px solid rgba(124,92,252,0.3);border-radius:999px;padding:6px 16px;font-size:13px;color:#a78bfa;margin-bottom:32px;animation:fadeUp .6s ease both;}
+    .landing-badge span{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite;}
+    .landing-h1{font-family:'Syne',sans-serif;font-size:clamp(40px,7vw,80px);font-weight:800;line-height:1.05;letter-spacing:-2px;animation:fadeUp .7s .1s ease both;}
+    .landing-h1 .grad{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .landing-sub{max-width:560px;margin:20px auto 0;color:var(--muted);font-size:18px;line-height:1.6;animation:fadeUp .7s .2s ease both;}
+    .landing-cta{display:inline-flex;align-items:center;gap:10px;margin-top:40px;padding:16px 36px;background:linear-gradient(135deg,var(--accent),#9b6dff);border:none;border-radius:999px;color:#fff;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 0 40px rgba(124,92,252,0.4);animation:fadeUp .7s .3s ease both;}
+    .landing-cta:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(124,92,252,0.6);}
+    .landing-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:800px;margin:60px auto 0;width:100%;animation:fadeUp .7s .4s ease both;}
+    .feat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:left;transition:border-color .2s,transform .2s;}
+    .feat-card:hover{border-color:rgba(124,92,252,0.4);transform:translateY(-2px);}
+    .feat-icon{font-size:28px;margin-bottom:10px;}
+    .feat-card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;}
+    .feat-card p{font-size:13px;color:var(--muted);line-height:1.5;}
+
+    /* ONBOARDING */
+    #onboarding{align-items:center;justify-content:center;padding:40px 20px;}
+    .onboard-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:40px;max-width:560px;width:100%;animation:fadeUp .5s ease both;}
+    .step-indicator{display:flex;gap:6px;margin-bottom:32px;}
+    .step-dot{height:4px;flex:1;border-radius:999px;background:var(--surface2);transition:background .3s;}
+    .step-dot.done{background:var(--accent);}
+    .step-dot.active{background:linear-gradient(90deg,var(--accent),var(--accent2));}
+    .onboard-step{display:none;}
+    .onboard-step.active{display:block;animation:fadeUp .3s ease both;}
+    .onboard-label{font-size:12px;font-weight:500;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+    .onboard-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:8px;}
+    .onboard-sub{color:var(--muted);font-size:14px;margin-bottom:28px;line-height:1.5;}
+    .form-group{margin-bottom:18px;}
+    .form-group label{display:block;font-size:13px;font-weight:500;margin-bottom:8px;color:var(--muted);}
+    .form-control{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .2s;outline:none;}
+    .form-control:focus{border-color:var(--accent);}
+    .form-control::placeholder{color:var(--muted);}
+    select.form-control option{background:#1c1c27;}
+    .tag-grid{display:flex;flex-wrap:wrap;gap:8px;}
+    .tag-btn{padding:8px 14px;border-radius:999px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:13px;cursor:pointer;transition:all .2s;}
+    .tag-btn.selected{background:rgba(124,92,252,0.2);border-color:var(--accent);color:var(--accent);}
+    .btn-primary{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#9b6dff);border:none;color:#fff;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .2s;margin-top:8px;}
+    .btn-primary:hover{opacity:.9;transform:translateY(-1px);}
+
+    /* ANALYZING */
+    #analyzing{align-items:center;justify-content:center;padding:40px 20px;text-align:center;}
+    .analyze-ring{width:100px;height:100px;margin:0 auto 32px;border-radius:50%;border:3px solid var(--surface2);border-top-color:var(--accent);border-right-color:var(--accent2);animation:spin 1s linear infinite;}
+    .analyze-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;}
+    .analyze-steps{list-style:none;margin-top:24px;text-align:left;max-width:320px;margin-left:auto;margin-right:auto;}
+    .analyze-step{display:flex;align-items:center;gap:12px;padding:10px 0;color:var(--muted);font-size:14px;border-bottom:1px solid var(--border);transition:color .3s;}
+    .analyze-step.done{color:var(--accent3);}
+    .analyze-step.active{color:var(--text);}
+    .step-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .3s;}
+    .analyze-step.done .step-check{background:var(--accent3);border-color:var(--accent3);color:#000;}
+    .analyze-step.active .step-check{border-color:var(--accent);animation:pulse 1s infinite;}
+
+    /* DASHBOARD */
+    #dashboard{flex-direction:column;}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.8);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;}
+    .topbar-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;}
+    .topbar-logo span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .topbar-user{display:flex;align-items:center;gap:12px;}
+    .user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;}
+    .dash-body{display:grid;grid-template-columns:260px 1fr;flex:1;}
+    .sidebar{border-right:1px solid var(--border);padding:24px 16px;background:rgba(13,13,20,0.5);}
+    .sidebar-nav{list-style:none;}
+    .nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;color:var(--muted);font-size:14px;font-weight:500;transition:all .2s;margin-bottom:4px;}
+    .nav-item:hover{background:var(--surface);color:var(--text);}
+    .nav-item.active{background:rgba(124,92,252,0.15);color:var(--accent);}
+    .nav-icon{font-size:18px;width:24px;text-align:center;}
+    .sidebar-divider{height:1px;background:var(--border);margin:16px 0;}
+    .rank-card{background:linear-gradient(135deg,rgba(124,92,252,0.2),rgba(252,92,125,0.1));border:1px solid rgba(124,92,252,0.3);border-radius:14px;padding:16px;margin-bottom:20px;}
+    .rank-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;}
+    .rank-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--gold);margin-bottom:8px;}
+    .xp-bar-wrap{background:rgba(255,255,255,0.1);border-radius:999px;height:6px;overflow:hidden;margin-bottom:6px;}
+    .xp-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s ease;}
+    .xp-text{font-size:11px;color:var(--muted);}
+    .main-content{padding:32px;overflow-y:auto;}
+    .main-tab{display:none;}
+    .main-tab.active{display:block;animation:fadeUp .3s ease both;}
+
+    /* SCORE */
+    .score-hero{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:24px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;}
+    .score-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px;}
+    .score-sub{color:var(--muted);font-size:14px;line-height:1.6;max-width:480px;}
+    .score-ring-wrap{position:relative;width:120px;height:120px;flex-shrink:0;}
+    .score-ring{transform:rotate(-90deg);}
+    .score-ring circle{fill:none;stroke-width:8;}
+    .score-ring .bg{stroke:var(--surface2);}
+    .score-ring .fill{stroke:url(#scoreGrad);stroke-linecap:round;transition:stroke-dashoffset 1.5s ease;}
+    .score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Syne',sans-serif;font-size:28px;font-weight:800;text-align:center;}
+    .score-num span{display:block;font-size:10px;font-weight:400;color:var(--muted);}
+    .metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px;}
+    .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:transform .2s,border-color .2s;cursor:default;}
+    .metric-card:hover{transform:translateY(-2px);border-color:rgba(124,92,252,0.3);}
+    .metric-icon{font-size:24px;margin-bottom:8px;}
+    .metric-label{font-size:12px;color:var(--muted);margin-bottom:4px;}
+    .metric-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;}
+    .metric-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;margin-top:4px;}
+    .badge-red{background:rgba(252,92,125,0.15);color:var(--accent2);}
+    .badge-green{background:rgba(92,248,212,0.15);color:var(--accent3);}
+    .badge-yellow{background:rgba(255,199,95,0.15);color:var(--gold);}
+
+    /* ── DIAGNOSIS CARDS (novo!) ── */
+    .diag-section-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin:28px 0 16px;display:flex;align-items:center;gap:10px;}
+    .diag-loading{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
+    .diag-loading-ring{width:28px;height:28px;border-radius:50%;border:2px solid var(--surface2);border-top-color:var(--accent);animation:spin .8s linear infinite;flex-shrink:0;}
+    .diag-loading-text{font-size:14px;color:var(--muted);}
+
+    /* verdict card */
+    .verdict-card{border-radius:20px;padding:24px;margin-bottom:16px;border:1px solid;animation:fadeUp .4s ease both;}
+    .verdict-card.positive{background:rgba(92,248,212,0.05);border-color:rgba(92,248,212,0.2);}
+    .verdict-card.warning{background:rgba(255,199,95,0.05);border-color:rgba(255,199,95,0.2);}
+    .verdict-card.critical{background:rgba(252,92,125,0.05);border-color:rgba(252,92,125,0.2);}
+    .verdict-card.opportunity{background:rgba(124,92,252,0.05);border-color:rgba(124,92,252,0.2);}
+    .verdict-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+    .verdict-icon{font-size:26px;}
+    .verdict-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+    .verdict-card.positive .verdict-label{color:var(--accent3);}
+    .verdict-card.warning .verdict-label{color:var(--gold);}
+    .verdict-card.critical .verdict-label{color:var(--accent2);}
+    .verdict-card.opportunity .verdict-label{color:var(--accent);}
+    .verdict-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:8px;}
+    .verdict-text{font-size:14px;color:var(--muted);line-height:1.7;}
+    .verdict-text strong{color:var(--text);font-weight:600;}
+
+    /* error cards */
+    .errors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;}
+    .error-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;transition:border-color .2s,transform .2s;animation:fadeUp .4s ease both;}
+    .error-card:hover{border-color:rgba(252,92,125,0.3);transform:translateY(-2px);}
+    .error-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:rgba(252,92,125,0.2);margin-bottom:4px;}
+    .error-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;margin-bottom:8px;color:var(--accent2);}
+    .error-text{font-size:13px;color:var(--muted);line-height:1.6;}
+
+    /* action card */
+    .action-card{background:linear-gradient(135deg,rgba(124,92,252,0.1),rgba(92,248,212,0.05));border:1px solid rgba(124,92,252,0.25);border-radius:20px;padding:24px;display:flex;gap:16px;align-items:flex-start;animation:fadeUp .4s ease both;}
+    .action-icon{font-size:32px;flex-shrink:0;}
+    .action-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;margin-bottom:6px;color:var(--accent);}
+    .action-text{font-size:14px;color:var(--muted);line-height:1.6;}
+    .action-cta-btn{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 18px;background:rgba(124,92,252,0.2);border:1px solid rgba(124,92,252,0.3);border-radius:999px;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+    .action-cta-btn:hover{background:rgba(124,92,252,0.35);}
+
+    /* tips */
+    .tips-list{display:flex;flex-direction:column;gap:12px;}
+    .tip-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:flex-start;gap:14px;transition:border-color .2s,transform .2s;}
+    .tip-item:hover{border-color:rgba(124,92,252,0.3);transform:translateX(4px);}
+    .tip-priority{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0;}
+    .priority-high{background:var(--accent2);}
+    .priority-med{background:var(--gold);}
+    .priority-low{background:var(--accent3);}
+    .tip-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px;}
+    .tip-desc{font-size:13px;color:var(--muted);line-height:1.5;}
+
+    /* POSTS */
+    .post-generator{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:24px;}
+    .gen-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:20px;}
+    .gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+    .format-options{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+    .format-btn{padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:13px;cursor:pointer;transition:all .2s;}
+    .format-btn.selected{border-color:var(--accent);color:var(--accent);background:rgba(124,92,252,0.1);}
+    .gen-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#9b6dff);border:none;border-radius:10px;color:#fff;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+    .gen-btn:hover{opacity:.9;}
+    .gen-btn:disabled{opacity:.5;cursor:not-allowed;}
+    .post-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:20px;animation:fadeUp .4s ease both;}
+    .post-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+    .post-type-badge{padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;background:rgba(124,92,252,0.2);color:var(--accent);}
+    .post-copy-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--muted);font-size:12px;cursor:pointer;transition:all .2s;}
+    .post-copy-btn:hover{border-color:var(--accent3);color:var(--accent3);}
+    .post-content-area{background:var(--surface);border-radius:10px;padding:16px;font-size:14px;line-height:1.7;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+    .hashtag-cloud{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;}
+    .hashtag{padding:4px 10px;border-radius:999px;background:rgba(92,248,212,0.1);color:var(--accent3);font-size:12px;}
+
+    /* MISSIONS */
+    .missions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+    .mission-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .2s,transform .2s;}
+    .mission-card:hover{border-color:rgba(124,92,252,0.3);transform:translateY(-2px);}
+    .mission-card.done{border-color:rgba(92,248,212,0.3);background:rgba(92,248,212,0.03);}
+    .mission-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+    .mission-icon{font-size:28px;}
+    .mission-xp{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--gold);background:rgba(255,199,95,0.1);padding:3px 10px;border-radius:999px;}
+    .mission-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;}
+    .mission-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:14px;}
+    .mission-check-btn{width:100%;padding:10px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:13px;cursor:pointer;transition:all .2s;}
+    .mission-check-btn:hover{border-color:var(--accent);color:var(--accent);}
+    .mission-card.done .mission-check-btn{background:rgba(92,248,212,0.1);border-color:var(--accent3);color:var(--accent3);}
+    .levels-track{display:flex;gap:0;overflow-x:auto;padding:24px 0;margin-bottom:28px;}
+    .level-node{flex-shrink:0;display:flex;flex-direction:column;align-items:center;width:120px;}
+    .level-circle{width:52px;height:52px;border-radius:50%;background:var(--surface2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;position:relative;z-index:1;transition:all .3s;}
+    .level-node.current .level-circle{border-color:var(--accent);box-shadow:0 0 20px rgba(124,92,252,0.4);background:rgba(124,92,252,0.15);}
+    .level-node.done .level-circle{border-color:var(--accent3);background:rgba(92,248,212,0.1);}
+    .level-name{font-size:11px;font-weight:600;margin-top:8px;text-align:center;color:var(--muted);}
+    .level-node.current .level-name{color:var(--accent);}
+    .level-node.done .level-name{color:var(--accent3);}
+    .level-connector{flex:1;height:2px;background:var(--border);margin-top:26px;min-width:20px;}
+    .level-connector.done{background:var(--accent3);}
+
+    /* SEO */
+    .seo-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+    .seo-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:transform .2s,border-color .2s;}
+    .seo-card:hover{transform:translateY(-2px);border-color:rgba(124,92,252,0.3);}
+    .seo-card-icon{font-size:32px;margin-bottom:12px;}
+    .seo-card-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:8px;}
+    .seo-card-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;}
+    .seo-keywords{display:flex;flex-wrap:wrap;gap:6px;}
+    .seo-kw{padding:4px 10px;background:rgba(124,92,252,0.1);border:1px solid rgba(124,92,252,0.2);border-radius:999px;font-size:12px;color:var(--accent);}
+
+    /* TRENDS */
+    .trend-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:12px;display:flex;align-items:center;gap:16px;transition:border-color .2s,transform .2s;}
+    .trend-item:hover{border-color:rgba(124,92,252,0.3);transform:translateX(4px);}
+    .trend-rank{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--surface2);min-width:40px;}
+    .trend-info{flex:1;}
+    .trend-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px;}
+    .trend-desc{font-size:13px;color:var(--muted);}
+    .trend-heat{font-size:13px;font-weight:600;color:var(--accent2);white-space:nowrap;}
+
+    /* SECTION */
+    .section-header{margin-bottom:24px;}
+    .section-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;}
+    .section-sub{font-size:14px;color:var(--muted);}
+
+    /* XP POP */
+    .xp-pop{position:fixed;pointer-events:none;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--gold);z-index:9999;animation:xpFly 1.2s ease forwards;}
+    @keyframes xpFly{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-60px) scale(1.3);}}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:32px;right:32px;z-index:999;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;display:flex;align-items:center;gap:10px;font-size:14px;box-shadow:0 20px 60px rgba(0,0,0,0.5);transform:translateY(20px);opacity:0;transition:all .3s ease;}
+    .toast.show{transform:translateY(0);opacity:1;}
+
+    /* MOBILE */
+    @media(max-width:768px){
+      .dash-body{grid-template-columns:1fr;}
+      .sidebar{display:none;}
+      .score-hero{grid-template-columns:1fr;}
+      .gen-grid{grid-template-columns:1fr;}
+      .topbar{padding:12px 16px;}
+      .main-content{padding:16px 16px 80px;}
+      .mobile-nav{display:flex!important;}
     }
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 0; opacity: .5;
-    }
-    .orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
-    .orb1 { width: 600px; height: 600px; background: rgba(124,92,252,0.15); top: -200px; left: -200px; }
-    .orb2 { width: 500px; height: 500px; background: rgba(252,92,125,0.1); bottom: -150px; right: -100px; }
-    .orb3 { width: 400px; height: 400px; background: rgba(92,248,212,0.07); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:8px 16px 20px;gap:4px;z-index:100;}
+    .mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:10px;cursor:pointer;color:var(--muted);font-size:10px;transition:all .2s;background:none;border:none;}
+    .mobile-nav-item.active{color:var(--accent);background:rgba(124,92,252,0.1);}
+    .mobile-nav-icon{font-size:20px;}
 
-    .app { position: relative; z-index: 1; }
-    .screen { display: none; min-height: 100vh; }
-    .screen.active { display: flex; flex-direction: column; }
-
-    /* ── LANDING ── */
-    #landing { align-items: center; justify-content: center; padding: 40px 20px; text-align: center; }
-    .landing-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(124,92,252,0.15); border: 1px solid rgba(124,92,252,0.3);
-      border-radius: 999px; padding: 6px 16px; font-size: 13px; color: #a78bfa;
-      margin-bottom: 32px; animation: fadeUp .6s ease both;
-    }
-    .landing-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
-    .landing-h1 {
-      font-family: 'Syne', sans-serif; font-size: clamp(40px, 7vw, 80px);
-      font-weight: 800; line-height: 1.05; letter-spacing: -2px;
-      animation: fadeUp .7s .1s ease both;
-    }
-    .landing-h1 .grad { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .landing-sub { max-width: 560px; margin: 20px auto 0; color: var(--muted); font-size: 18px; line-height: 1.6; animation: fadeUp .7s .2s ease both; }
-    .landing-cta {
-      display: inline-flex; align-items: center; gap: 10px;
-      margin-top: 40px; padding: 16px 36px;
-      background: linear-gradient(135deg, var(--accent), #9b6dff);
-      border: none; border-radius: 999px; color: #fff;
-      font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
-      cursor: pointer; transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 0 40px rgba(124,92,252,0.4);
-      animation: fadeUp .7s .3s ease both;
-    }
-    .landing-cta:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(124,92,252,0.6); }
-    .landing-features {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px; max-width: 800px; margin: 60px auto 0; width: 100%;
-      animation: fadeUp .7s .4s ease both;
-    }
-    .feat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: left; transition: border-color .2s; }
-    .feat-card:hover { border-color: rgba(124,92,252,0.4); }
-    .feat-icon { font-size: 28px; margin-bottom: 10px; }
-    .feat-card h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .feat-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
-
-    /* ── ONBOARDING ── */
-    #onboarding { align-items: center; justify-content: center; padding: 40px 20px; }
-    .onboard-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; max-width: 560px; width: 100%; animation: fadeUp .5s ease both; }
-    .step-indicator { display: flex; gap: 6px; margin-bottom: 32px; }
-    .step-dot { height: 4px; flex: 1; border-radius: 999px; background: var(--surface2); transition: background .3s; }
-    .step-dot.done { background: var(--accent); }
-    .step-dot.active { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
-    .onboard-step { display: none; }
-    .onboard-step.active { display: block; animation: fadeUp .3s ease both; }
-    .onboard-label { font-size: 12px; font-weight: 500; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-    .onboard-title { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 8px; }
-    .onboard-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; line-height: 1.5; }
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: var(--muted); }
-    .form-control { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; transition: border-color .2s; outline: none; }
-    .form-control:focus { border-color: var(--accent); }
-    .form-control::placeholder { color: var(--muted); }
-    select.form-control option { background: #1c1c27; }
-    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tag-btn { padding: 8px 14px; border-radius: 999px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; transition: all .2s; }
-    .tag-btn.selected { background: rgba(124,92,252,0.2); border-color: var(--accent); color: var(--accent); }
-    .btn-primary { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), #9b6dff); border: none; color: #fff; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity .2s, transform .2s; margin-top: 8px; }
-    .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
-
-    /* ── ANALYZING ── */
-    #analyzing { align-items: center; justify-content: center; padding: 40px 20px; text-align: center; }
-    .analyze-ring { width: 100px; height: 100px; margin: 0 auto 32px; border-radius: 50%; border: 3px solid var(--surface2); border-top-color: var(--accent); border-right-color: var(--accent2); animation: spin 1s linear infinite; }
-    .analyze-title { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 12px; }
-    .analyze-steps { list-style: none; margin-top: 24px; text-align: left; max-width: 320px; margin-left: auto; margin-right: auto; }
-    .analyze-step { display: flex; align-items: center; gap: 12px; padding: 10px 0; color: var(--muted); font-size: 14px; border-bottom: 1px solid var(--border); transition: color .3s; }
-    .analyze-step.done { color: var(--accent3); }
-    .analyze-step.active { color: var(--text); }
-    .step-check { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; transition: all .3s; }
-    .analyze-step.done .step-check { background: var(--accent3); border-color: var(--accent3); color: #000; }
-    .analyze-step.active .step-check { border-color: var(--accent); animation: pulse 1s infinite; }
-
-    /* ── DASHBOARD ── */
-    #dashboard { flex-direction: column; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; border-bottom: 1px solid var(--border); background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; }
-    .topbar-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; }
-    .topbar-logo span { background: linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .topbar-user { display: flex; align-items: center; gap: 12px; }
-    .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,var(--accent),var(--accent2)); display: flex; align-items: center; justify-content: center; font-family: 'Syne',sans-serif; font-weight: 800; font-size: 14px; }
-    .dash-body { display: grid; grid-template-columns: 260px 1fr; flex: 1; }
-    .sidebar { border-right: 1px solid var(--border); padding: 24px 16px; background: rgba(13,13,20,0.5); }
-    .sidebar-nav { list-style: none; }
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; cursor: pointer; color: var(--muted); font-size: 14px; font-weight: 500; transition: all .2s; margin-bottom: 4px; }
-    .nav-item:hover { background: var(--surface); color: var(--text); }
-    .nav-item.active { background: rgba(124,92,252,0.15); color: var(--accent); }
-    .nav-icon { font-size: 18px; width: 24px; text-align: center; }
-    .sidebar-divider { height: 1px; background: var(--border); margin: 16px 0; }
-    .rank-card { background: linear-gradient(135deg, rgba(124,92,252,0.2), rgba(252,92,125,0.1)); border: 1px solid rgba(124,92,252,0.3); border-radius: 14px; padding: 16px; margin-bottom: 20px; }
-    .rank-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; }
-    .rank-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
-    .xp-bar-wrap { background: rgba(255,255,255,0.1); border-radius: 999px; height: 6px; overflow: hidden; margin-bottom: 6px; }
-    .xp-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 1s ease; }
-    .xp-text { font-size: 11px; color: var(--muted); }
-    .main-content { padding: 32px; overflow-y: auto; }
-    .main-tab { display: none; }
-    .main-tab.active { display: block; animation: fadeUp .3s ease both; }
-
-    /* score */
-    .score-hero { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px; margin-bottom: 24px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
-    .score-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 8px; }
-    .score-sub { color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 480px; }
-    .score-ring-wrap { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
-    .score-ring { transform: rotate(-90deg); }
-    .score-ring circle { fill: none; stroke-width: 8; }
-    .score-ring .bg { stroke: var(--surface2); }
-    .score-ring .fill { stroke: url(#scoreGrad); stroke-linecap: round; transition: stroke-dashoffset 1.5s ease; }
-    .score-num { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; text-align: center; }
-    .score-num span { display: block; font-size: 10px; font-weight: 400; color: var(--muted); }
-    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-    .metric-icon { font-size: 24px; margin-bottom: 8px; }
-    .metric-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-    .metric-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
-    .metric-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; margin-top: 4px; }
-    .badge-red { background: rgba(252,92,125,0.15); color: var(--accent2); }
-    .badge-green { background: rgba(92,248,212,0.15); color: var(--accent3); }
-    .badge-yellow { background: rgba(255,199,95,0.15); color: var(--gold); }
-    .tips-list { display: flex; flex-direction: column; gap: 12px; }
-    .tip-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: flex-start; gap: 14px; transition: border-color .2s; }
-    .tip-item:hover { border-color: rgba(124,92,252,0.3); }
-    .tip-priority { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
-    .priority-high { background: var(--accent2); }
-    .priority-med { background: var(--gold); }
-    .priority-low { background: var(--accent3); }
-    .tip-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .tip-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
-
-    /* AI diagnosis banner */
-    .ai-diagnosis-box { background: linear-gradient(135deg,rgba(92,248,212,0.05),rgba(124,92,252,0.05)); border: 1px solid rgba(92,248,212,0.2); border-radius: 16px; padding: 20px; margin-bottom: 20px; font-size: 14px; line-height: 1.7; white-space: pre-wrap; }
-    .ai-diagnosis-box.loading { color: var(--muted); font-style: italic; }
-
-    /* posts */
-    .post-generator { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px; margin-bottom: 24px; }
-    .gen-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 20px; }
-    .gen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .format-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-    .format-btn { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); font-size: 13px; cursor: pointer; transition: all .2s; }
-    .format-btn.selected { border-color: var(--accent); color: var(--accent); background: rgba(124,92,252,0.1); }
-    .gen-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; background: linear-gradient(135deg,var(--accent),#9b6dff); border: none; border-radius: 10px; color: #fff; font-family: 'Syne',sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity .2s; }
-    .gen-btn:hover { opacity: .9; }
-    .gen-btn:disabled { opacity: .5; cursor: not-allowed; }
-    .post-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-top: 20px; animation: fadeUp .4s ease both; }
-    .post-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .post-type-badge { padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; background: rgba(124,92,252,0.2); color: var(--accent); }
-    .post-copy-btn { background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; color: var(--muted); font-size: 12px; cursor: pointer; transition: all .2s; }
-    .post-copy-btn:hover { border-color: var(--accent3); color: var(--accent3); }
-    .post-content-area { background: var(--surface); border-radius: 10px; padding: 16px; font-size: 14px; line-height: 1.7; color: var(--text); white-space: pre-wrap; word-break: break-word; }
-    .hashtag-cloud { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
-    .hashtag { padding: 4px 10px; border-radius: 999px; background: rgba(92,248,212,0.1); color: var(--accent3); font-size: 12px; }
-
-    /* missions */
-    .missions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-    .mission-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: border-color .2s; }
-    .mission-card:hover { border-color: rgba(124,92,252,0.3); }
-    .mission-card.done { border-color: rgba(92,248,212,0.3); background: rgba(92,248,212,0.03); }
-    .mission-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-    .mission-icon { font-size: 28px; }
-    .mission-xp { font-family: 'Syne',sans-serif; font-size: 13px; font-weight: 700; color: var(--gold); background: rgba(255,199,95,0.1); padding: 3px 10px; border-radius: 999px; }
-    .mission-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .mission-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
-    .mission-check-btn { width: 100%; padding: 10px; border-radius: 8px; background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; transition: all .2s; }
-    .mission-check-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .mission-card.done .mission-check-btn { background: rgba(92,248,212,0.1); border-color: var(--accent3); color: var(--accent3); }
-    .levels-track { display: flex; gap: 0; overflow-x: auto; padding: 24px 0; margin-bottom: 28px; }
-    .level-node { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; width: 120px; }
-    .level-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 20px; position: relative; z-index: 1; transition: all .3s; }
-    .level-node.current .level-circle { border-color: var(--accent); box-shadow: 0 0 20px rgba(124,92,252,0.4); background: rgba(124,92,252,0.15); }
-    .level-node.done .level-circle { border-color: var(--accent3); background: rgba(92,248,212,0.1); }
-    .level-name { font-size: 11px; font-weight: 600; margin-top: 8px; text-align: center; color: var(--muted); }
-    .level-node.current .level-name { color: var(--accent); }
-    .level-node.done .level-name { color: var(--accent3); }
-    .level-connector { flex: 1; height: 2px; background: var(--border); margin-top: 26px; min-width: 20px; }
-    .level-connector.done { background: var(--accent3); }
-
-    /* seo */
-    .seo-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-    .seo-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
-    .seo-card-icon { font-size: 32px; margin-bottom: 12px; }
-    .seo-card-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 8px; }
-    .seo-card-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
-    .seo-keywords { display: flex; flex-wrap: wrap; gap: 6px; }
-    .seo-kw { padding: 4px 10px; background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.2); border-radius: 999px; font-size: 12px; color: var(--accent); }
-
-    /* trends */
-    .trend-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; }
-    .trend-rank { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--surface2); min-width: 40px; }
-    .trend-info { flex: 1; }
-    .trend-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .trend-desc { font-size: 13px; color: var(--muted); }
-    .trend-heat { font-size: 13px; font-weight: 600; color: var(--accent2); white-space: nowrap; }
-
-    /* section */
-    .section-header { margin-bottom: 24px; }
-    .section-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-    .section-sub { font-size: 14px; color: var(--muted); }
-
-    /* toast */
-    .toast { position: fixed; bottom: 32px; right: 32px; z-index: 999; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); transform: translateY(20px); opacity: 0; transition: all .3s ease; }
-    .toast.show { transform: translateY(0); opacity: 1; }
-
-    /* mobile */
-    @media (max-width: 768px) {
-      .dash-body { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .score-hero { grid-template-columns: 1fr; }
-      .gen-grid { grid-template-columns: 1fr; }
-      .topbar { padding: 12px 16px; }
-      .main-content { padding: 16px 16px 80px; }
-      .mobile-nav { display: flex !important; }
-    }
-    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 8px 16px 20px; gap: 4px; z-index: 100; }
-    .mobile-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; border-radius: 10px; cursor: pointer; color: var(--muted); font-size: 10px; transition: all .2s; background: none; border: none; }
-    .mobile-nav-item.active { color: var(--accent); background: rgba(124,92,252,0.1); }
-    .mobile-nav-icon { font-size: 20px; }
-
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
   </style>
 </head>
 <body>
@@ -279,7 +281,7 @@
   <button class="landing-cta" onclick="goToOnboarding()">✦ Analisar meu Instagram</button>
   <div class="landing-features">
     <div class="feat-card"><div class="feat-icon">🔍</div><h3>Diagnóstico Real</h3><p>Score do seu perfil com pontos exatos de melhoria e prioridades.</p></div>
-    <div class="feat-card"><div class="feat-icon">✍️</div><h3>Posts com Claude IA</h3><p>Legenda completa, hashtags e horário ideal gerados em segundos.</p></div>
+    <div class="feat-card"><div class="feat-icon">✍️</div><h3>Posts com IA</h3><p>Legenda completa, hashtags e horário ideal gerados em segundos.</p></div>
     <div class="feat-card"><div class="feat-icon">🎮</div><h3>Missões & Ranking</h3><p>Suba de nível completando tarefas e veja seu Instagram crescer.</p></div>
     <div class="feat-card"><div class="feat-icon">🔎</div><h3>SEO no Google</h3><p>Apareça nas buscas locais e atraia clientes que já procuram você.</p></div>
   </div>
@@ -289,38 +291,28 @@
 <div class="screen" id="onboarding">
   <div class="onboard-card">
     <div class="step-indicator">
-      <div class="step-dot active" id="sd1"></div>
-      <div class="step-dot" id="sd2"></div>
-      <div class="step-dot" id="sd3"></div>
-      <div class="step-dot" id="sd4"></div>
+      <div class="step-dot active" id="sd1"></div><div class="step-dot" id="sd2"></div>
+      <div class="step-dot" id="sd3"></div><div class="step-dot" id="sd4"></div>
     </div>
-
     <div class="onboard-step active" id="step1">
       <div class="onboard-label">Passo 1 de 4</div>
       <div class="onboard-title">Qual é sua profissão?</div>
       <div class="onboard-sub">Vamos personalizar tudo para a sua área de atuação.</div>
-      <div class="form-group">
-        <label>Profissão</label>
+      <div class="form-group"><label>Profissão</label>
         <select class="form-control" id="profession">
           <option value="">Selecione...</option>
-          <option value="advogado">Advogado(a)</option>
-          <option value="dentista">Dentista</option>
-          <option value="psicologo">Psicólogo(a)</option>
-          <option value="nutricionista">Nutricionista</option>
-          <option value="medico">Médico(a)</option>
-          <option value="fisioterapeuta">Fisioterapeuta</option>
-          <option value="arquiteto">Arquiteto(a)</option>
-          <option value="contador">Contador(a)</option>
-          <option value="engenheiro">Engenheiro(a)</option>
-          <option value="coach">Coach / Mentor</option>
+          <option value="advogado">Advogado(a)</option><option value="dentista">Dentista</option>
+          <option value="psicologo">Psicólogo(a)</option><option value="nutricionista">Nutricionista</option>
+          <option value="medico">Médico(a)</option><option value="fisioterapeuta">Fisioterapeuta</option>
+          <option value="arquiteto">Arquiteto(a)</option><option value="contador">Contador(a)</option>
+          <option value="engenheiro">Engenheiro(a)</option><option value="coach">Coach / Mentor</option>
           <option value="outro">Outro</option>
         </select>
       </div>
-      <div class="form-group"><label>Instagram (ex: @seuuser)</label><input class="form-control" type="text" id="instagram" placeholder="@seuperfil" /></div>
-      <div class="form-group"><label>Cidade / Região</label><input class="form-control" type="text" id="city" placeholder="Ex: São Paulo, SP" /></div>
+      <div class="form-group"><label>Instagram (ex: @seuuser)</label><input class="form-control" type="text" id="instagram" placeholder="@seuperfil"/></div>
+      <div class="form-group"><label>Cidade / Região</label><input class="form-control" type="text" id="city" placeholder="Ex: São Paulo, SP"/></div>
       <button class="btn-primary" onclick="nextStep(2)">Continuar →</button>
     </div>
-
     <div class="onboard-step" id="step2">
       <div class="onboard-label">Passo 2 de 4</div>
       <div class="onboard-title">Suas áreas de atuação</div>
@@ -328,24 +320,18 @@
       <div class="tag-grid" id="areasGrid"></div>
       <button class="btn-primary" style="margin-top:24px" onclick="nextStep(3)">Continuar →</button>
     </div>
-
     <div class="onboard-step" id="step3">
       <div class="onboard-label">Passo 3 de 4</div>
       <div class="onboard-title">Seu cliente ideal</div>
       <div class="onboard-sub">A IA vai criar posts que ressoam com quem você quer atingir.</div>
-      <div class="form-group">
-        <label>Faixa etária do cliente</label>
+      <div class="form-group"><label>Faixa etária do cliente</label>
         <select class="form-control" id="clientAge">
-          <option value="18-25">18 a 25 anos</option>
-          <option value="25-35" selected>25 a 35 anos</option>
-          <option value="35-50">35 a 50 anos</option>
-          <option value="50+">50 anos ou mais</option>
-          <option value="todos">Todos</option>
+          <option value="18-25">18 a 25 anos</option><option value="25-35" selected>25 a 35 anos</option>
+          <option value="35-50">35 a 50 anos</option><option value="50+">50 anos ou mais</option><option value="todos">Todos</option>
         </select>
       </div>
       <div class="form-group"><label>Principal problema que você resolve</label><textarea class="form-control" rows="3" id="clientProblem" placeholder="Ex: Meus clientes chegam sem saber seus direitos..."></textarea></div>
-      <div class="form-group">
-        <label>Tom de voz</label>
+      <div class="form-group"><label>Tom de voz</label>
         <div class="tag-grid" id="toneGrid">
           <div class="tag-btn" onclick="selectTag(this,'tone','educativo')">📚 Educativo</div>
           <div class="tag-btn" onclick="selectTag(this,'tone','humanizado')">💬 Humanizado</div>
@@ -356,32 +342,23 @@
       </div>
       <button class="btn-primary" onclick="nextStep(4)">Continuar →</button>
     </div>
-
     <div class="onboard-step" id="step4">
       <div class="onboard-label">Passo 4 de 4</div>
       <div class="onboard-title">Situação atual do perfil</div>
-      <div class="onboard-sub">Ajuda a IA a calibrar o diagnóstico com mais precisão.</div>
-      <div class="form-group">
-        <label>Quantos seguidores você tem?</label>
+      <div class="onboard-sub">Isso ajuda a calibrar o diagnóstico com mais precisão.</div>
+      <div class="form-group"><label>Quantos seguidores você tem?</label>
         <select class="form-control" id="followers">
-          <option value="0-100">Menos de 100</option>
-          <option value="100-500">100 a 500</option>
-          <option value="500-1000">500 a 1.000</option>
-          <option value="1000-5000">1.000 a 5.000</option>
-          <option value="5000+">Mais de 5.000</option>
+          <option value="0-100">Menos de 100</option><option value="100-500">100 a 500</option>
+          <option value="500-1000">500 a 1.000</option><option value="1000-5000">1.000 a 5.000</option><option value="5000+">Mais de 5.000</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Com que frequência você posta?</label>
+      <div class="form-group"><label>Com que frequência você posta?</label>
         <select class="form-control" id="frequency">
-          <option value="nunca">Nunca / raramente</option>
-          <option value="mensal">1-2 vezes por mês</option>
-          <option value="semanal">1-2 vezes por semana</option>
-          <option value="diario">Quase todos os dias</option>
+          <option value="nunca">Nunca / raramente</option><option value="mensal">1-2 vezes por mês</option>
+          <option value="semanal">1-2 vezes por semana</option><option value="diario">Quase todos os dias</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Você já tem uma bio profissional?</label>
+      <div class="form-group"><label>Você já tem uma bio profissional?</label>
         <div class="tag-grid" id="bioGrid">
           <div class="tag-btn" onclick="selectTag(this,'bio','sim')">✅ Sim, tenho</div>
           <div class="tag-btn" onclick="selectTag(this,'bio','parcial')">⚠️ Mais ou menos</div>
@@ -402,7 +379,7 @@
     <li class="analyze-step active" id="as1"><div class="step-check"></div> Lendo dados do perfil</li>
     <li class="analyze-step" id="as2"><div class="step-check"></div> Avaliando bio e posicionamento</li>
     <li class="analyze-step" id="as3"><div class="step-check"></div> Calculando score de autoridade</li>
-    <li class="analyze-step" id="as4"><div class="step-check"></div> Gerando diagnóstico com IA</li>
+    <li class="analyze-step" id="as4"><div class="step-check"></div> Gerando diagnóstico personalizado</li>
     <li class="analyze-step" id="as5"><div class="step-check"></div> Preparando missões de crescimento</li>
   </ul>
 </div>
@@ -434,12 +411,14 @@
     </div>
     <div class="main-content">
 
-      <!-- DIAGNÓSTICO -->
+      <!-- ── DIAGNÓSTICO ── -->
       <div class="main-tab active" id="tab-diagnostico">
         <div class="section-header">
           <div class="section-title">Diagnóstico do Perfil</div>
           <div class="section-sub" id="diagSub">Análise completa do seu Instagram</div>
         </div>
+
+        <!-- Score hero -->
         <div class="score-hero">
           <div>
             <div class="score-title">Score de Autoridade</div>
@@ -448,41 +427,46 @@
           <div class="score-ring-wrap">
             <svg class="score-ring" width="120" height="120" viewBox="0 0 120 120">
               <defs><linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#7c5cfc"/><stop offset="100%" style="stop-color:#fc5c7d"/></linearGradient></defs>
-              <circle class="bg" cx="60" cy="60" r="52" />
-              <circle class="fill" id="scoreCircle" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7" />
+              <circle class="bg" cx="60" cy="60" r="52"/>
+              <circle class="fill" id="scoreCircle" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
             </svg>
             <div class="score-num" id="scoreNum">0<span>/ 100</span></div>
           </div>
         </div>
+
+        <!-- Metrics -->
         <div class="metrics-grid">
           <div class="metric-card"><div class="metric-icon">📝</div><div class="metric-label">Bio</div><div class="metric-val" id="metrBio">—</div><div class="metric-badge" id="metrBioB"></div></div>
           <div class="metric-card"><div class="metric-icon">📅</div><div class="metric-label">Frequência</div><div class="metric-val" id="metrFreq">—</div><div class="metric-badge" id="metrFreqB"></div></div>
           <div class="metric-card"><div class="metric-icon">👥</div><div class="metric-label">Seguidores</div><div class="metric-val" id="metrFollow">—</div><div class="metric-badge" id="metrFollowB"></div></div>
           <div class="metric-card"><div class="metric-icon">🎯</div><div class="metric-label">Nicho</div><div class="metric-val" id="metrNiche">—</div><div class="metric-badge badge-green">✓ Definido</div></div>
         </div>
-        <div class="section-header" style="margin-top:8px">
-          <div class="section-title" style="font-size:18px">🤖 Análise da IA (Claude)</div>
-          <div class="section-sub">Diagnóstico personalizado gerado para o seu perfil</div>
+
+        <!-- AI Diagnosis rendered as cards -->
+        <div class="diag-section-title">✦ O que encontramos no seu perfil</div>
+        <div id="diagCardsArea">
+          <div class="diag-loading">
+            <div class="diag-loading-ring"></div>
+            <div class="diag-loading-text">Gerando sua análise personalizada... isso leva alguns segundos.</div>
+          </div>
         </div>
-        <div class="ai-diagnosis-box loading" id="aiDiagnosisBox">⏳ Gerando análise personalizada com Claude IA...</div>
-        <div class="section-header" style="margin-top:24px">
-          <div class="section-title" style="font-size:18px">🔧 Prioridades de Melhoria</div>
-        </div>
+
+        <!-- Static tips -->
+        <div class="diag-section-title" style="margin-top:32px">🔧 Suas prioridades agora</div>
         <div class="tips-list" id="tipsList"></div>
       </div>
 
-      <!-- POSTS -->
+      <!-- ── POSTS ── -->
       <div class="main-tab" id="tab-posts">
         <div class="section-header">
           <div class="section-title">Criar Post com IA</div>
-          <div class="section-sub">Gere legendas, hashtags e ideias de conteúdo em segundos com Claude</div>
+          <div class="section-sub">Gere legendas, hashtags e ideias de conteúdo em segundos</div>
         </div>
         <div class="post-generator">
           <div class="gen-title">✦ Gerador de Conteúdo</div>
           <div class="gen-grid">
-            <div class="form-group"><label>Tema do post</label><input class="form-control" id="postTema" placeholder="Ex: Direitos do consumidor" /></div>
-            <div class="form-group">
-              <label>Objetivo</label>
+            <div class="form-group"><label>Tema do post</label><input class="form-control" id="postTema" placeholder="Ex: Direitos do consumidor"/></div>
+            <div class="form-group"><label>Objetivo</label>
               <select class="form-control" id="postObjetivo">
                 <option value="educar">Educar / Informar</option>
                 <option value="engajar">Gerar Engajamento</option>
@@ -493,7 +477,7 @@
             </div>
           </div>
           <div style="margin-bottom:16px">
-            <label style="font-size:13px;color:var(--muted);display:block;margin-bottom:8px">Formato do post</label>
+            <label style="font-size:13px;color:var(--muted);display:block;margin-bottom:8px">Formato</label>
             <div class="format-options">
               <div class="format-btn selected" onclick="selectFormat(this,'carrossel')">📱 Carrossel</div>
               <div class="format-btn" onclick="selectFormat(this,'reels')">🎬 Reels</div>
@@ -501,13 +485,13 @@
               <div class="format-btn" onclick="selectFormat(this,'stories')">📖 Stories</div>
             </div>
           </div>
-          <div class="form-group"><label>Contexto extra (opcional)</label><textarea class="form-control" id="postContext" rows="2" placeholder="Ex: Quero mencionar um caso recente que viralizou..."></textarea></div>
-          <button class="gen-btn" id="genBtn" onclick="generatePost()">✦ Gerar Post com Claude IA</button>
+          <div class="form-group"><label>Contexto extra (opcional)</label><textarea class="form-control" id="postContext" rows="2" placeholder="Ex: Quero mencionar um caso recente..."></textarea></div>
+          <button class="gen-btn" id="genBtn" onclick="generatePost()">✦ Gerar Post Agora</button>
         </div>
         <div id="postOutput"></div>
       </div>
 
-      <!-- RANKING -->
+      <!-- ── RANKING ── -->
       <div class="main-tab" id="tab-ranking">
         <div class="section-header">
           <div class="section-title">Missões & Ranking</div>
@@ -539,7 +523,7 @@
         <div class="missions-grid" id="missionsGrid"></div>
       </div>
 
-      <!-- SEO -->
+      <!-- ── SEO ── -->
       <div class="main-tab" id="tab-seo">
         <div class="section-header">
           <div class="section-title">SEO no Google</div>
@@ -548,7 +532,7 @@
         <div class="seo-cards" id="seoCards"></div>
       </div>
 
-      <!-- TENDÊNCIAS -->
+      <!-- ── TENDÊNCIAS ── -->
       <div class="main-tab" id="tab-trends">
         <div class="section-header">
           <div class="section-title">Radar de Tendências</div>
@@ -557,8 +541,8 @@
         <div id="trendsList"></div>
       </div>
 
-    </div><!-- /main-content -->
-  </div><!-- /dash-body -->
+    </div>
+  </div>
 
   <!-- MOBILE NAV -->
   <div class="mobile-nav">
@@ -568,24 +552,18 @@
     <button class="mobile-nav-item" onclick="switchTab('seo',this,true)"><span class="mobile-nav-icon">🔎</span>SEO</button>
     <button class="mobile-nav-item" onclick="switchTab('trends',this,true)"><span class="mobile-nav-icon">📈</span>Tendências</button>
   </div>
-</div><!-- /dashboard -->
+</div>
 
 </div><!-- /app -->
 <div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMsg">OK</span></div>
 
 <script>
-// ══════════════════════════════════════
-// STATE
-// ══════════════════════════════════════
-const S = {
-  profession:'', instagram:'', city:'',
-  areas:[], tone:'educativo', clientAge:'25-35',
-  clientProblem:'', followers:'0-100', frequency:'nunca', bio:'nao',
-  xp:150, missions:[],
-  selectedFormat:'carrossel',
+const S={
+  profession:'',instagram:'',city:'',areas:[],tone:'educativo',
+  clientAge:'25-35',clientProblem:'',followers:'0-100',frequency:'nunca',bio:'nao',
+  xp:150,missions:[],selectedFormat:'carrossel'
 };
-
-const AREAS = {
+const AREAS={
   advogado:['Direito Civil','Direito de Família','Direito Trabalhista','Direito Criminal','Direito do Consumidor','Divórcio','Inventário','Direito Empresarial'],
   dentista:['Clínica Geral','Ortodontia','Implante Dentário','Estética Dental','Clareamento','Odontopediatria','Prótese Dentária'],
   psicologo:['Ansiedade','Depressão','Relacionamentos','Autoestima','TCC','Psicologia Infantil','Terapia de Casal','Burnout'],
@@ -599,267 +577,225 @@ const AREAS = {
   outro:['Marketing Pessoal','Branding','Empreendedorismo','Produtividade'],
 };
 
-// ══════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function goToOnboarding() { showScreen('onboarding'); }
-
-function switchTab(name, el, isMobile) {
-  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function goToOnboarding(){showScreen('onboarding');}
+function switchTab(name,el,isMobile){
+  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const sel = isMobile ? '.mobile-nav-item' : '.nav-item';
-  document.querySelectorAll(sel).forEach(i => i.classList.remove('active'));
+  document.querySelectorAll(isMobile?'.mobile-nav-item':'.nav-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
 }
 
-// ══════════════════════════════════════
-// ONBOARDING
-// ══════════════════════════════════════
-function nextStep(n) {
-  if (n===2) {
-    S.profession = document.getElementById('profession').value;
-    S.instagram  = document.getElementById('instagram').value;
-    S.city       = document.getElementById('city').value;
-    if (!S.profession) { showToast('⚠️ Selecione sua profissão',true); return; }
-    populateAreas();
-  }
-  if (n===3 && S.areas.length===0) { showToast('⚠️ Selecione ao menos uma área',true); return; }
-  if (n===4) {
-    S.clientAge     = document.getElementById('clientAge').value;
-    S.clientProblem = document.getElementById('clientProblem').value;
-  }
+function nextStep(n){
+  if(n===2){S.profession=document.getElementById('profession').value;S.instagram=document.getElementById('instagram').value;S.city=document.getElementById('city').value;if(!S.profession){showToast('⚠️ Selecione sua profissão',true);return;}populateAreas();}
+  if(n===3&&S.areas.length===0){showToast('⚠️ Selecione ao menos uma área',true);return;}
+  if(n===4){S.clientAge=document.getElementById('clientAge').value;S.clientProblem=document.getElementById('clientProblem').value;}
   document.querySelectorAll('.onboard-step').forEach(s=>s.classList.remove('active'));
   document.getElementById('step'+n).classList.add('active');
-  for(let i=1;i<=4;i++){
-    const d=document.getElementById('sd'+i);
-    d.className='step-dot';
-    if(i<n) d.classList.add('done');
-    if(i===n) d.classList.add('active');
-  }
+  for(let i=1;i<=4;i++){const d=document.getElementById('sd'+i);d.className='step-dot';if(i<n)d.classList.add('done');if(i===n)d.classList.add('active');}
 }
 
 function populateAreas(){
-  const grid=document.getElementById('areasGrid'); grid.innerHTML='';
+  const grid=document.getElementById('areasGrid');grid.innerHTML='';
   (AREAS[S.profession]||AREAS.outro).forEach(a=>{
-    const b=document.createElement('div'); b.className='tag-btn'; b.textContent=a;
-    b.onclick=()=>{ b.classList.toggle('selected'); const i=S.areas.indexOf(a); i===-1?S.areas.push(a):S.areas.splice(i,1); };
+    const b=document.createElement('div');b.className='tag-btn';b.textContent=a;
+    b.onclick=()=>{b.classList.toggle('selected');const i=S.areas.indexOf(a);i===-1?S.areas.push(a):S.areas.splice(i,1);};
     grid.appendChild(b);
   });
 }
 
-function selectTag(el, key, val){
-  const parent=el.closest('.tag-grid');
-  parent.querySelectorAll('.tag-btn').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected'); S[key]=val;
+function selectTag(el,key,val){
+  el.closest('.tag-grid').querySelectorAll('.tag-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');S[key]=val;
 }
 
-// ══════════════════════════════════════
-// ANALYSIS ANIMATION + TRIGGER AI
-// ══════════════════════════════════════
 function startAnalysis(){
-  S.followers = document.getElementById('followers').value;
-  S.frequency = document.getElementById('frequency').value;
+  S.followers=document.getElementById('followers').value;
+  S.frequency=document.getElementById('frequency').value;
   showScreen('analyzing');
-  const steps=['as1','as2','as3','as4','as5'];
-  let i=0;
+  const steps=['as1','as2','as3','as4','as5'];let i=0;
   function tick(){
-    if(i>0){ const p=document.getElementById(steps[i-1]); p.classList.remove('active'); p.classList.add('done'); p.querySelector('.step-check').textContent='✓'; }
-    if(i<steps.length){ document.getElementById(steps[i]).classList.add('active'); i++; setTimeout(tick,900); }
-    else {
-      setTimeout(()=>{
-        document.getElementById(steps[steps.length-1]).classList.remove('active');
-        document.getElementById(steps[steps.length-1]).classList.add('done');
-        document.getElementById(steps[steps.length-1]).querySelector('.step-check').textContent='✓';
-        buildDashboard();
-        showScreen('dashboard');
-        loadAiDiagnosis(); // fire AI call after showing dashboard
-      },600);
-    }
+    if(i>0){const p=document.getElementById(steps[i-1]);p.classList.remove('active');p.classList.add('done');p.querySelector('.step-check').textContent='✓';}
+    if(i<steps.length){document.getElementById(steps[i]).classList.add('active');i++;setTimeout(tick,900);}
+    else{setTimeout(()=>{document.getElementById(steps[steps.length-1]).classList.remove('active');document.getElementById(steps[steps.length-1]).classList.add('done');document.getElementById(steps[steps.length-1]).querySelector('.step-check').textContent='✓';buildDashboard();showScreen('dashboard');loadAiDiagnosis();},600);}
   }
   tick();
 }
 
-// ══════════════════════════════════════
-// DASHBOARD BUILD
-// ══════════════════════════════════════
 function buildDashboard(){
   const ig=S.instagram||'@profissional';
   document.getElementById('topbarUser').textContent=ig;
   document.getElementById('userAvatar').textContent=(ig.replace('@','')[0]||'P').toUpperCase();
   document.getElementById('diagSub').textContent=`Análise de ${ig} — ${S.profession}`;
-  animateScore(calcScore());
-  buildMetrics(); buildTips(); buildMissions(); buildSeo(); buildTrends(); updateXpUI();
+  animateScore(calcScore());buildMetrics();buildTips();buildMissions();buildSeo();buildTrends();updateXpUI();
 }
 
 function calcScore(){
   let s=20;
-  if(S.bio==='sim') s+=20; else if(S.bio==='parcial') s+=10;
-  if(S.frequency==='diario') s+=20; else if(S.frequency==='semanal') s+=12; else if(S.frequency==='mensal') s+=4;
-  if(S.followers!=='0-100') s+=10;
-  if(S.areas.length>=3) s+=10;
-  if(S.tone) s+=5; if(S.city) s+=5;
+  if(S.bio==='sim')s+=20;else if(S.bio==='parcial')s+=10;
+  if(S.frequency==='diario')s+=20;else if(S.frequency==='semanal')s+=12;else if(S.frequency==='mensal')s+=4;
+  if(S.followers!=='0-100')s+=10;if(S.areas.length>=3)s+=10;if(S.tone)s+=5;if(S.city)s+=5;
   return Math.min(s,78);
 }
 
 function animateScore(score){
-  const circ=document.getElementById('scoreCircle'), numEl=document.getElementById('scoreNum');
-  const C=326.7; let cur=0;
-  const iv=setInterval(()=>{
-    cur=Math.min(cur+1,score);
-    numEl.innerHTML=`${cur}<span>/ 100</span>`;
-    circ.style.strokeDashoffset=C-(cur/100)*C;
-    if(cur>=score) clearInterval(iv);
-  },25);
-  document.getElementById('scoreDesc').textContent=
-    score<35?'Seu perfil está em estágio inicial. Com as ações certas, você pode triplicar esse score em 30 dias.':
-    score<55?'Você tem uma base, mas falta consistência. As dicas abaixo são o caminho.':
-    'Bom começo! Agora escale com conteúdo estratégico e presença fora do Instagram.';
+  const circ=document.getElementById('scoreCircle'),numEl=document.getElementById('scoreNum');
+  const C=326.7;let cur=0;
+  const iv=setInterval(()=>{cur=Math.min(cur+1,score);numEl.innerHTML=`${cur}<span>/ 100</span>`;circ.style.strokeDashoffset=C-(cur/100)*C;if(cur>=score)clearInterval(iv);},25);
+  document.getElementById('scoreDesc').textContent=score<35?'Perfil invisível — ainda sem sinal claro de autoridade. Boa notícia: qualquer ação agora vai gerar resultado visível rápido.':score<55?'Você tem uma base, mas ainda falta consistência e posicionamento claro.':'Bom começo! Hora de escalar com conteúdo estratégico e presença fora do Instagram.';
 }
 
 function buildMetrics(){
   const bm={sim:['Otimizada','badge-green'],parcial:['Incompleta','badge-yellow'],nao:['Ausente','badge-red']};
   const fm={diario:['Diária','badge-green'],semanal:['Semanal','badge-yellow'],mensal:['Rara','badge-red'],nunca:['Inexistente','badge-red']};
-  set('metrBio', bm[S.bio][0]); setBadge('metrBioB', bm[S.bio][0], bm[S.bio][1]);
-  set('metrFreq', fm[S.frequency][0]); setBadge('metrFreqB', fm[S.frequency][0], fm[S.frequency][1]);
-  set('metrFollow', S.followers); setBadge('metrFollowB', S.followers==='5000+'?'🔥 Ótimo':'Crescendo', S.followers==='5000+'?'badge-green':'badge-yellow');
-  set('metrNiche', profLabel(S.profession));
+  set('metrBio',bm[S.bio][0]);setBadge('metrBioB',bm[S.bio][0],bm[S.bio][1]);
+  set('metrFreq',fm[S.frequency][0]);setBadge('metrFreqB',fm[S.frequency][0],fm[S.frequency][1]);
+  set('metrFollow',S.followers);setBadge('metrFollowB',S.followers==='5000+'?'🔥 Ótimo':'Crescendo',S.followers==='5000+'?'badge-green':'badge-yellow');
+  set('metrNiche',profLabel(S.profession));
 }
-function set(id,txt){ document.getElementById(id).textContent=txt; }
-function setBadge(id,txt,cls){ const el=document.getElementById(id); el.textContent=txt; el.className='metric-badge '+cls; }
-
-function profLabel(p){ return {advogado:'Direito',dentista:'Odonto',psicologo:'Psico',nutricionista:'Nutri',medico:'Medicina',fisioterapeuta:'Fisio',arquiteto:'Arq.',contador:'Contab.',engenheiro:'Eng.',coach:'Coach',outro:'Outro'}[p]||p; }
+function set(id,txt){document.getElementById(id).textContent=txt;}
+function setBadge(id,txt,cls){const el=document.getElementById(id);el.textContent=txt;el.className='metric-badge '+cls;}
+function profLabel(p){return{advogado:'Direito',dentista:'Odonto',psicologo:'Psico',nutricionista:'Nutri',medico:'Medicina',fisioterapeuta:'Fisio',arquiteto:'Arq.',contador:'Contab.',engenheiro:'Eng.',coach:'Coach',outro:'Outro'}[p]||p;}
 
 function buildTips(){
   const tips=[];
-  if(S.bio!=='sim') tips.push({p:'high',title:'🔧 Reescreva sua bio profissional',desc:`Responda em 3 segundos: quem você é, o que resolve e onde atende. Ex: "${profLabel(S.profession)} em ${S.city||'sua cidade'} | ${S.areas[0]||'especialidade'} | 📲 DM para consulta"`});
-  if(S.frequency==='nunca'||S.frequency==='mensal') tips.push({p:'high',title:'📅 Crie uma agenda mínima de posts',desc:'Poste pelo menos 3 vezes por semana. Consistência vale mais que perfeição. Comece simples: 1 dica + 1 bastidor + 1 depoimento.'});
+  if(S.bio!=='sim')tips.push({p:'high',title:'🔧 Reescreva sua bio profissional',desc:`Responda em 3 segundos: quem você é, o que resolve e onde atende. Ex: "${profLabel(S.profession)} em ${S.city||'sua cidade'} | ${S.areas[0]||'especialidade'} | 📲 DM para consulta"`});
+  if(S.frequency==='nunca'||S.frequency==='mensal')tips.push({p:'high',title:'📅 Crie uma agenda mínima de posts',desc:'Poste pelo menos 3 vezes por semana. Consistência vale mais que perfeição.'});
   tips.push({p:'med',title:'🎠 Invista em Carrosséis educativos',desc:`Carrosséis têm 3x mais salvamentos. Ideia: "5 dúvidas que todo ${profLabel(S.profession)} responde" — direto, útil, salvável.`});
-  tips.push({p:'med',title:'📲 CTA em todo post',desc:'Cada legenda deve terminar com uma ação: "Salva esse post", "Manda DM", "Comenta sua dúvida". Sem CTA, o algoritmo e o cliente ficam em dúvida.'});
-  if(S.city) tips.push({p:'low',title:`📍 Use localização em todos os posts`,desc:`Marque "${S.city}" toda vez. Aumenta sua visibilidade para pessoas da região buscando ${S.profession}.`});
-  const list=document.getElementById('tipsList'); list.innerHTML='';
-  tips.forEach(t=>{ list.innerHTML+=`<div class="tip-item"><div class="tip-priority priority-${t.p}"></div><div><div class="tip-title">${t.title}</div><div class="tip-desc">${t.desc}</div></div></div>`; });
+  tips.push({p:'med',title:'📲 CTA em todo post',desc:'Cada legenda deve terminar com uma ação clara: "Salva esse post", "Manda DM", "Comenta sua dúvida".'});
+  if(S.city)tips.push({p:'low',title:`📍 Use localização em todos os posts`,desc:`Marque "${S.city}" toda vez. Aumenta sua visibilidade para quem busca ${S.profession} na região.`});
+  const list=document.getElementById('tipsList');list.innerHTML='';
+  tips.forEach(t=>{list.innerHTML+=`<div class="tip-item"><div class="tip-priority priority-${t.p}"></div><div><div class="tip-title">${t.title}</div><div class="tip-desc">${t.desc}</div></div></div>`;});
 }
 
-// ══════════════════════════════════════
-// AI DIAGNOSIS via /api/generate
-// ══════════════════════════════════════
+// ── AI DIAGNOSIS — rendered as visual cards ──
 async function loadAiDiagnosis(){
-  const box=document.getElementById('aiDiagnosisBox');
-  box.className='ai-diagnosis-box loading';
-  box.textContent='⏳ Gerando análise personalizada com Claude IA...';
+  const area=document.getElementById('diagCardsArea');
 
-  const prompt=`Você é um especialista em marketing digital para profissionais liberais.
+  const prompt=`Você é o InstaPro.ai, uma plataforma de marketing digital para profissionais liberais. Fale na primeira pessoa do plural ("encontramos", "identificamos") como se fosse a plataforma falando.
 
-Perfil do usuário:
+Perfil analisado:
 - Profissão: ${S.profession}
 - Instagram: ${S.instagram||'não informado'}
 - Cidade: ${S.city||'não informada'}
-- Áreas de atuação: ${S.areas.join(', ')||'não informadas'}
-- Tom de voz desejado: ${S.tone}
-- Cliente ideal: ${S.clientAge} anos
+- Áreas: ${S.areas.join(', ')||'não informadas'}
+- Tom: ${S.tone} | Cliente: ${S.clientAge} anos
+- Seguidores: ${S.followers} | Frequência: ${S.frequency} | Bio: ${S.bio}
 - Problema que resolve: ${S.clientProblem||'não informado'}
-- Seguidores: ${S.followers}
-- Frequência de posts: ${S.frequency}
-- Tem bio profissional: ${S.bio}
 
-Faça um diagnóstico personalizado e direto do perfil. Inclua:
-1. Uma avaliação geral do estágio atual (2-3 frases)
-2. Os 3 maiores erros que provavelmente estão travando o crescimento
-3. A oportunidade de ouro que esse profissional tem no Instagram agora
-4. Uma ação específica para fazer hoje
+Retorne SOMENTE um JSON válido (sem markdown, sem backticks) com esta estrutura:
+{
+  "veredicto": "2-3 frases diretas sobre o estágio atual do perfil. Seja honesto e motivador ao mesmo tempo.",
+  "erros": [
+    {"titulo": "nome curto do erro", "texto": "explicação em 1-2 frases práticas e diretas"},
+    {"titulo": "nome curto do erro", "texto": "..."},
+    {"titulo": "nome curto do erro", "texto": "..."}
+  ],
+  "oportunidade": "1 parágrafo sobre a maior oportunidade específica para esse profissional agora no Instagram",
+  "acao_hoje": "1 ação concreta e específica para fazer hoje, em 1 frase imperativa"
+}`;
 
-Seja direto, prático e motivador. Escreva em português brasileiro, tom conversacional. Máximo 300 palavras.`;
-
-  try {
-    const res = await fetch('/api/generate', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ prompt })
-    });
-    const data = await res.json();
-    if(data.error){ throw new Error(data.error); }
-    box.className='ai-diagnosis-box';
-    box.textContent=data.result;
-    showToast('🤖 Diagnóstico da IA carregado!');
-  } catch(err){
-    box.className='ai-diagnosis-box';
-    box.textContent=`⚠️ Não foi possível carregar o diagnóstico com IA agora.\n\nVerifique se a variável ANTHROPIC_API_KEY está configurada no Vercel (veja o README).\n\nErro: ${err.message}`;
+  try{
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
+    const data=await res.json();
+    if(data.error)throw new Error(data.error);
+    let parsed;
+    try{parsed=JSON.parse(data.result.replace(/```json|```/g,'').trim());}
+    catch{throw new Error('Resposta inesperada da IA');}
+    renderDiagCards(parsed,area);
+    showToast('✦ Diagnóstico gerado!');
+  }catch(err){
+    area.innerHTML=`<div class="verdict-card warning"><div class="verdict-header"><div class="verdict-icon">⚠️</div><div class="verdict-label">Atenção</div></div><div class="verdict-text">Não foi possível gerar o diagnóstico com IA agora. Verifique a variável <strong>ANTHROPIC_API_KEY</strong> no Vercel.<br><small style="color:var(--muted)">${err.message}</small></div></div>`;
   }
 }
 
-// ══════════════════════════════════════
-// POST GENERATOR via /api/generate
-// ══════════════════════════════════════
-function selectFormat(el,fmt){
-  document.querySelectorAll('.format-btn').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected'); S.selectedFormat=fmt;
+function renderDiagCards(d,container){
+  // strip markdown bold from any text
+  const clean=t=>(t||'').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'$1');
+
+  let html=`
+    <div class="verdict-card positive" style="animation-delay:.0s">
+      <div class="verdict-header"><div class="verdict-icon">📊</div><div class="verdict-label">Visão Geral</div></div>
+      <div class="verdict-text">${clean(d.veredicto)}</div>
+    </div>`;
+
+  if(d.erros&&d.erros.length){
+    html+=`<div class="errors-grid">`;
+    d.erros.forEach((e,i)=>{
+      html+=`<div class="error-card" style="animation-delay:${0.1+i*0.08}s">
+        <div class="error-num">0${i+1}</div>
+        <div class="error-title">${e.titulo}</div>
+        <div class="error-text">${clean(e.texto)}</div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  if(d.oportunidade){
+    html+=`<div class="verdict-card opportunity" style="animation-delay:.35s">
+      <div class="verdict-header"><div class="verdict-icon">💡</div><div class="verdict-label">Sua Oportunidade de Ouro</div></div>
+      <div class="verdict-text">${clean(d.oportunidade)}</div>
+    </div>`;
+  }
+
+  if(d.acao_hoje){
+    html+=`<div class="action-card" style="animation-delay:.45s">
+      <div class="action-icon">⚡</div>
+      <div>
+        <div class="action-title">Faça isso hoje</div>
+        <div class="action-text">${clean(d.acao_hoje)}</div>
+        <div class="action-cta-btn" onclick="switchTab('posts',document.querySelector('.nav-item:nth-child(2)'))">✍️ Criar post agora →</div>
+      </div>
+    </div>`;
+  }
+
+  container.innerHTML=html;
 }
+
+// ── POST GENERATOR ──
+function selectFormat(el,fmt){document.querySelectorAll('.format-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');S.selectedFormat=fmt;}
 
 async function generatePost(){
   const tema=document.getElementById('postTema').value.trim();
-  if(!tema){ showToast('⚠️ Digite o tema do post',true); return; }
+  if(!tema){showToast('⚠️ Digite o tema do post',true);return;}
   const objetivo=document.getElementById('postObjetivo').value;
   const context=document.getElementById('postContext').value.trim();
   const btn=document.getElementById('genBtn');
-  btn.disabled=true; btn.textContent='⏳ Gerando com Claude...';
+  btn.disabled=true;btn.textContent='⏳ Gerando...';
 
-  const prompt=`Você é um especialista em marketing digital para profissionais liberais.
+  const prompt=`Você é o InstaPro.ai. Crie um post completo para Instagram.
 
-Profissional: ${S.profession} em ${S.city||'Brasil'}
-Áreas: ${S.areas.join(', ')}
-Tom de voz: ${S.tone}
-Cliente ideal: ${S.clientAge} anos
+Profissional: ${S.profession} em ${S.city||'Brasil'} | Áreas: ${S.areas.join(', ')} | Tom: ${S.tone} | Cliente: ${S.clientAge} anos
+Formato: ${S.selectedFormat} | Tema: ${tema} | Objetivo: ${objetivo}
+Contexto: ${context||'nenhum'}
 
-Crie um post completo para Instagram.
-Formato: ${S.selectedFormat}
-Tema: ${tema}
-Objetivo: ${objetivo}
-Contexto extra: ${context||'nenhum'}
-
-Retorne APENAS um JSON válido (sem markdown, sem explicação, sem backticks), com esta estrutura exata:
+Retorne SOMENTE JSON válido (sem markdown, sem backticks):
 {
-  "titulo": "título chamativo do post",
-  "legenda": "legenda completa com quebras de linha reais, emojis e CTA ao final",
-  "hashtags": ["hashtag1", "hashtag2", "hashtag3"],
-  "dica_extra": "dica de quando/como postar"
+  "titulo": "título chamativo",
+  "legenda": "legenda completa com quebras de linha, emojis e CTA",
+  "hashtags": ["hashtag1","hashtag2",...],
+  "dica_extra": "dica de horário e como postar"
 }
+Use 15 hashtags. Legenda entre 150-300 palavras.`;
 
-Use 15 hashtags relevantes. A legenda deve ter entre 150 e 300 palavras.`;
-
-  try {
-    const res = await fetch('/api/generate', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ prompt })
-    });
-    const data = await res.json();
-    if(data.error) throw new Error(data.error);
-
+  try{
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
+    const data=await res.json();
+    if(data.error)throw new Error(data.error);
     let parsed;
-    try { parsed = JSON.parse(data.result.replace(/```json|```/g,'').trim()); }
-    catch { parsed = { titulo: tema, legenda: data.result, hashtags:[], dica_extra:'' }; }
-
+    try{parsed=JSON.parse(data.result.replace(/```json|```/g,'').trim());}
+    catch{parsed={titulo:tema,legenda:data.result,hashtags:[],dica_extra:''};}
     showPost(parsed);
-    S.xp += 20; updateXpUI();
-    showToast('✨ Post gerado com sucesso!');
-  } catch(err){
-    showToast('⚠️ Erro: '+err.message, true);
-  } finally {
-    btn.disabled=false; btn.textContent='✦ Gerar Post com Claude IA';
-  }
+    S.xp+=20;updateXpUI();spawnXp('+20 XP');
+    showToast('✨ Post gerado!');
+  }catch(err){showToast('⚠️ Erro: '+err.message,true);}
+  finally{btn.disabled=false;btn.textContent='✦ Gerar Post Agora';}
 }
 
 function showPost(post){
   const hashtags=(post.hashtags||[]).map(h=>`<span class="hashtag">${h.startsWith('#')?h:'#'+h}</span>`).join('');
   document.getElementById('postOutput').innerHTML=`<div class="post-card">
-    <div class="post-card-header">
-      <span class="post-type-badge">📱 ${S.selectedFormat}</span>
-      <button class="post-copy-btn" onclick="copyPost(this)">📋 Copiar legenda</button>
-    </div>
+    <div class="post-card-header"><span class="post-type-badge">📱 ${S.selectedFormat}</span><button class="post-copy-btn" onclick="copyPost(this)">📋 Copiar legenda</button></div>
     <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:12px">${post.titulo||''}</div>
     <div class="post-content-area" id="postLegenda">${post.legenda||''}</div>
     <div class="hashtag-cloud">${hashtags}</div>
@@ -868,20 +804,17 @@ function showPost(post){
 }
 
 function copyPost(btn){
-  const text=document.getElementById('postLegenda').textContent;
-  navigator.clipboard.writeText(text).then(()=>{ btn.textContent='✅ Copiado!'; setTimeout(()=>btn.textContent='📋 Copiar legenda',2000); showToast('📋 Legenda copiada!'); });
+  navigator.clipboard.writeText(document.getElementById('postLegenda').textContent).then(()=>{btn.textContent='✅ Copiado!';setTimeout(()=>btn.textContent='📋 Copiar legenda',2000);showToast('📋 Legenda copiada!');});
 }
 
-// ══════════════════════════════════════
-// MISSIONS
-// ══════════════════════════════════════
+// ── MISSIONS ──
 function buildMissions(){
   S.missions=[
     {id:'m1',icon:'📝',title:'Otimize sua bio',desc:'Reescreva sua bio: Quem você é + O que resolve + Onde + CTA.',xp:50,done:false},
-    {id:'m2',icon:'📸',title:'Poste 3 vezes esta semana',desc:'3 posts em 7 dias — carrossel, stories ou reels.',xp:80,done:false},
+    {id:'m2',icon:'📸',title:'Poste 3 vezes esta semana',desc:'3 posts em 7 dias — carrossel, stories ou reels. Consistência é tudo.',xp:80,done:false},
     {id:'m3',icon:'🎬',title:'Grave seu primeiro Reels',desc:'30 segundos respondendo a dúvida mais comum que você recebe.',xp:100,done:false},
     {id:'m4',icon:'💬',title:'Responda todos os comentários',desc:'Por 7 dias, responda 100% dos comentários em até 1h.',xp:60,done:false},
-    {id:'m5',icon:'🔑',title:'Configure o Google Meu Negócio',desc:'Crie ou otimize seu perfil — é gratuito e atrai clientes locais.',xp:120,done:false},
+    {id:'m5',icon:'🔑',title:'Configure o Google Meu Negócio',desc:'Perfil gratuito no Google — atrai clientes locais que já procuram você.',xp:120,done:false},
     {id:'m6',icon:'📊',title:'Crie um carrossel com dicas',desc:`"5 dúvidas que um ${profLabel(S.profession)} responde toda semana".`,xp:70,done:false},
   ];
   renderMissions();
@@ -898,10 +831,9 @@ function renderMissions(){
 }
 
 function completeMission(id){
-  const m=S.missions.find(x=>x.id===id);
-  if(!m||m.done) return;
-  m.done=true; S.xp+=m.xp; updateXpUI(); renderMissions();
-  showToast(`🎉 +${m.xp} XP! ${m.title} concluída!`);
+  const m=S.missions.find(x=>x.id===id);if(!m||m.done)return;
+  m.done=true;S.xp+=m.xp;updateXpUI();renderMissions();
+  spawnXp(`+${m.xp} XP`);showToast(`🎉 +${m.xp} XP! "${m.title}" concluída!`);
 }
 
 function updateXpUI(){
@@ -911,22 +843,25 @@ function updateXpUI(){
   set('totalXp',S.xp+' XP');
   document.getElementById('bigXpBar').style.width=pct+'%';
   document.getElementById('sidebarXpBar').style.width=pct+'%';
-  set('sidebarRankName',lvl.name);
-  set('sidebarXpText',`${S.xp} / ${lvl.max} XP`);
+  set('sidebarRankName',lvl.name);set('sidebarXpText',`${S.xp} / ${lvl.max} XP`);
   const next=levels[levels.indexOf(lvl)+1];
-  if(next) set('xpNextLabel',`${lvl.max-S.xp} XP para ${next.name}`);
+  if(next)set('xpNextLabel',`${lvl.max-S.xp} XP para ${next.name}`);
 }
 
-// ══════════════════════════════════════
-// SEO
-// ══════════════════════════════════════
+function spawnXp(txt){
+  const el=document.createElement('div');el.className='xp-pop';el.textContent=txt;
+  el.style.cssText=`left:${window.innerWidth/2-30}px;top:${window.innerHeight/2}px;`;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),1300);
+}
+
+// ── SEO ──
 function buildSeo(){
-  const city=S.city||'sua cidade', area=S.areas[0]||'especialidade', p=S.profession;
+  const city=S.city||'sua cidade',area=S.areas[0]||'especialidade',p=S.profession;
   const cards=[
     {icon:'🗺️',title:'Google Meu Negócio',desc:`Seu cartão de visita gratuito no Google. Apareça quando alguém buscar "${p} em ${city}". Adicione fotos, horários e peça avaliações.`,keywords:[`${p} em ${city}`,`${area} ${city}`,`${p} perto de mim`,`${p} ${city} avaliações`]},
-    {icon:'✍️',title:'Conteúdo para Blog / Site',desc:`Artigos sobre dúvidas comuns atraem visitantes orgânicos. Escreva posts com título "Como [resolver problema] em ${city}".`,keywords:[`como encontrar ${p}`,`quando preciso de ${p}`,`quanto custa ${area}`,`${p} ${city} preço`]},
-    {icon:'⭐',title:'Estratégia de Avaliações',desc:`Peça avaliação para cada cliente atendido. 10 avaliações com 5 estrelas te colocam no topo das buscas locais.`,keywords:['google avaliações','google meu negócio nota','como subir no google','avaliações 5 estrelas']},
-    {icon:'📱',title:'Instagram como SEO',desc:`Use palavras-chave no nome de usuário e bio do Instagram. "Dr. João | ${profLabel(p)} ${city}" aparece nas buscas do Instagram e do Google.`,keywords:[`${p} ${city}`,`${area} ${city}`,`profissional ${city}`,`${p} recomendado`]},
+    {icon:'✍️',title:'Conteúdo para Blog / Site',desc:`Artigos sobre dúvidas comuns atraem visitantes orgânicos. Escreva posts "Como [resolver problema] em ${city}".`,keywords:[`como encontrar ${p}`,`quando preciso de ${p}`,`quanto custa ${area}`,`${p} ${city} preço`]},
+    {icon:'⭐',title:'Estratégia de Avaliações',desc:`10 avaliações com 5 estrelas te colocam no topo das buscas locais. Envie o link direto para cada cliente atendido.`,keywords:['google avaliações','google meu negócio nota','como subir no google']},
+    {icon:'📱',title:'Instagram como SEO',desc:`Use palavras-chave no nome de usuário e bio. "Dr. João | ${profLabel(p)} ${city}" aparece nas buscas do Instagram e do Google.`,keywords:[`${p} ${city}`,`${area} ${city}`,`profissional ${city}`]},
   ];
   document.getElementById('seoCards').innerHTML=cards.map(c=>`
     <div class="seo-card">
@@ -937,18 +872,16 @@ function buildSeo(){
     </div>`).join('');
 }
 
-// ══════════════════════════════════════
-// TRENDS
-// ══════════════════════════════════════
+// ── TRENDS ──
 function buildTrends(){
   const trends=[
-    {rank:1,name:'Carrosséis "5 erros que você comete ao..."',desc:'Formato mais salvo no Instagram. Profissionais que usam ganham 4x mais seguidores qualificados.',heat:'🔥🔥🔥 Máximo'},
-    {rank:2,name:'Reels educativos de 30-60 segundos',desc:'O algoritmo prioriza vídeos curtos. Responder 1 dúvida comum da sua área em 45s é ouro.',heat:'🔥🔥🔥 Máximo'},
-    {rank:3,name:'Bastidores da profissão ("um dia na vida")',desc:'Humaniza o profissional, gera conexão e curiosidade. Muito compartilhado.',heat:'🔥🔥 Alto'},
-    {rank:4,name:'Posts de "mito vs realidade"',desc:'Gera debate, engajamento e posiciona autoridade ao mesmo tempo.',heat:'🔥🔥 Alto'},
-    {rank:5,name:'Depoimentos em formato de história',desc:'Transformações reais de clientes têm altíssima taxa de salvamento e compartilhamento.',heat:'🔥🔥 Alto'},
-    {rank:6,name:'SEO no Instagram (bio + nome otimizados)',desc:'Profissionais que otimizam bio para busca ganham 30% mais alcance orgânico.',heat:'🔥 Crescendo'},
-    {rank:7,name:'Lives de perguntas e respostas',desc:'Posiciona autoridade em tempo real e pode ser repurposado em posts.',heat:'🔥 Crescendo'},
+    {rank:1,name:'Carrosséis "5 erros que você comete ao..."',desc:'Formato mais salvo no Instagram. Geram 4x mais seguidores qualificados.',heat:'🔥🔥🔥 Máximo'},
+    {rank:2,name:'Reels educativos de 30-60 segundos',desc:'O algoritmo prioriza vídeos curtos. 1 dúvida respondida em 45s é ouro.',heat:'🔥🔥🔥 Máximo'},
+    {rank:3,name:'Bastidores da profissão',desc:'Humaniza o profissional e gera conexão real com o público.',heat:'🔥🔥 Alto'},
+    {rank:4,name:'Posts de "mito vs realidade"',desc:'Geram debate, engajamento e posicionam autoridade ao mesmo tempo.',heat:'🔥🔥 Alto'},
+    {rank:5,name:'Depoimentos em formato de história',desc:'Transformações de clientes têm altíssima taxa de salvamento.',heat:'🔥🔥 Alto'},
+    {rank:6,name:'SEO no Instagram (bio + nome)',desc:'Profissionais que otimizam o perfil para busca ganham 30% mais alcance.',heat:'🔥 Crescendo'},
+    {rank:7,name:'Lives de perguntas e respostas',desc:'Posiciona autoridade em tempo real e pode virar posts depois.',heat:'🔥 Crescendo'},
   ];
   document.getElementById('trendsList').innerHTML=trends.map(t=>`
     <div class="trend-item">
@@ -958,15 +891,12 @@ function buildTrends(){
     </div>`).join('');
 }
 
-// ══════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════
-function showToast(msg, isErr){
+// ── TOAST ──
+function showToast(msg,isErr){
   const t=document.getElementById('toast');
   document.getElementById('toastMsg').textContent=msg;
   t.style.borderColor=isErr?'rgba(252,92,125,0.3)':'rgba(92,248,212,0.3)';
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
 }
 </script>
 </body>
